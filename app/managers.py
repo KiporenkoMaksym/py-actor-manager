@@ -4,7 +4,7 @@ from app.models import Actor
 
 
 class ActorManager:
-    def __init__(self, db_name="actors_db.sqlite", table_name="actors_format"):
+    def __init__(self, db_name="actors_db.sqlite", table_name="actors"):
         self._connection = sqlite3.connect(db_name)
         self.table_name = table_name
 
@@ -26,19 +26,19 @@ class ActorManager:
         ]
 
 
-    def update(self, id_to_update: int, new_first_name: str, new_last_name: str):
+    def update(self, pk: int, new_first_name: str, new_last_name: str):
         self._connection.execute(
             f"UPDATE {self.table_name} " 
             "SET first_name = ?, last_name = ? " 
             "WHERE id = ? ",
-            (new_first_name, new_last_name, id_to_update,)
+            (new_first_name, new_last_name, pk,)
         )
         self._connection.commit()
 
 
-    def delete(self, id_to_delete: int):
+    def delete(self, pk: int):
         self._connection.execute(
             f"DELETE FROM {self.table_name} WHERE id = ? ",
-            (id_to_delete,)
+            (pk,)
         )
         self._connection.commit()
